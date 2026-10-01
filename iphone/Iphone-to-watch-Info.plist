@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Potrebujeme pristup k zdravotnym udajom, aby sme zobrazili tvoju aktivitu z Galaxy Watch.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Potrebujeme zapisovat kroky a dalsie udaje z Galaxy Watch do Apple Health.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Potrebujeme Bluetooth na posielanie fotiek a zdravotnych udajov do Galaxy Watch.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Potrebujeme Bluetooth na pripojenie k Galaxy Watch.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Potrebujeme pristup k fotkam, aby sme ich mohli poslat na Galaxy Watch.</string>
+</dict>
+</plist>

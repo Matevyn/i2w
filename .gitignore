@@ -1,0 +1,17 @@
+# Samsung's proprietary SDK is fetched from your Samsung developer account.
+# Do not commit it: the redistributable terms do not permit republishing.
+watch/app/libs/*.aar
+
+# Local machine config
+watch/local.properties
+.idea/
+.gradle/
+build/
+.kotlin/
+*.iml
+
+# Xcode per-user state
+**/xcuserdata/
+*.xcuserstate
+
+.DS_Store
