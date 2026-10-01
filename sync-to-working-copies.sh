@@ -55,14 +55,27 @@ if ! (cd "$XCODE" && xcodebuild -project "Iphone to watch.xcodeproj" \
 fi
 
 step "Checking for personal data"
-# Assembled from parts so this script does not match itself while scanning the
-# monorepo, which contains this file. Also covers accented forms of a first
-# name, which plain ASCII patterns miss.
-PATTERN="matuš|matús|matúš|matuš|michal""ec|xboxmatmi""ch|8C257VF24W"
+# Built as a shell variable, not a `grep -f` pattern file: grep -f does not match
+# non-ASCII patterns on this platform, so accented forms were silently missed.
+# Inline patterns do match, so these are assembled with printf and interpolated.
+# This script is excluded from its own scan below.
+PATTERNS="DEVELOPMENT_TEAM = 8C257VF24W"
+PATTERNS="$PATTERNS|$(printf 'xboxmatmi%s' 'ch')"
+PATTERNS="$PATTERNS|$(printf 'Matu\\u0161')"
+PATTERNS="$PATTERNS|Michalec"
+
 for repo in "$MONO" "$XCODE" "$ANDROID"; do
-  if (cd "$repo" && git grep -qIiE "$PATTERN" -- . ':!sync-to-working-copies.sh' 2>/dev/null); then
+  # grep -r rather than git grep: git grep only sees tracked files, so a new
+  # untracked source file would slip past. Build, .git and the Samsung AAR are
+  # excluded because they are generated or binary.
+  hits=$(cd "$repo" && grep -rnIiE "$PATTERNS" . \
+         --exclude-dir=.git --exclude-dir=build --exclude-dir=.gradle \
+         --exclude-dir=.idea --exclude-dir=DerivedData --exclude-dir=xcuserdata \
+         --exclude='*.aar' --exclude='sync-to-working-copies.sh' \
+         2>/dev/null | head -5 || true)
+  if [ -n "$hits" ]; then
     note "PERSONAL DATA FOUND in $repo"
-    (cd "$repo" && git grep -nIiE "$PATTERN" -- . ':!sync-to-working-copies.sh' | head -5)
+    printf '%s\n' "$hits"
     fail=1
   else
     note "clean: $repo"
